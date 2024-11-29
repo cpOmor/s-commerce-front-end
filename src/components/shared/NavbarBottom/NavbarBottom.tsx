@@ -5,8 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import Container from "../Container";
 import { navigationData } from "./navigationData";
-import categoryData from "./categoryData";
-
+import Categoric from "@/components/ui/Categoric";
+import { categories } from "../../../../data";
 
 const NavbarBottom = () => {
   const [hoverIndex, setHoverIndex] = useState(null);
@@ -21,7 +21,7 @@ const NavbarBottom = () => {
       <Container>
         <div className={`flex justify-between gap-4 items-center relative`}>
           <div className="flex gap-4 items-center ">
-            <div className="w-[270px] h-[53px] bg-white px-5 rounded-t-md mt-[6px] relative">
+            {/* <div className="w-[270px] h-[53px] bg-white px-5 rounded-t-md mt-[6px] relative">
               <button
                 onClick={toggleDropdown}
                 className="!z-[999] w-full h-full flex justify-between items-center"
@@ -36,19 +36,16 @@ const NavbarBottom = () => {
                   <FaAngleDown />
                 </div>
               </button>
+            </div> */}
 
-              {/* <Categoric
-                isOpen={isOpen}
-                
-                setIsOpen={false}
-              /> */}
+            <Categoric categories={categories} />
 
-              <div
-                className={`w-[270px] !z-[999] shadow-sm absolute left-0 top-[53px] overflow-hidden transition-all duration-500 ease-in-out ${
-                  isOpen ? "max-h-screen" : "max-h-0"
-                }`}
-              >
-                <ul
+            <div
+              className={`w-full bg-red-500 !z-[999] shadow-sm absolute left-0 top-[53px] overflow-hidden transition-all duration-500 ease-in-out ${
+                isOpen ? "max-h-screen" : "max-h-0"
+              }`}
+            >
+              {/* <ul
                   className={`transition-transform duration-500 ease-in-out ${
                     isOpen
                       ? "transform translate-y-0"
@@ -80,9 +77,9 @@ const NavbarBottom = () => {
                       </Link>
                     </li>
                   ))}
-                </ul>
-              </div>
+                </ul> */}
             </div>
+
             <div>
               <ul className=" flex xl:space-x-10 space-x-5 ">
                 {navigationData.map((navItem, index: any) => (
