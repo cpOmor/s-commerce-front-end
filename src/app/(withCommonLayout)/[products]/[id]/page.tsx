@@ -3,13 +3,12 @@
 import Container from "@/components/shared/Container";
 import { Stars } from "@/utils/Stars";
 import Image from "next/image";
-import { useState } from "react";
+import { useState } from "react";import { FaSistrix, FaStar } from "react-icons/fa";
 
-import { FaSistrix, FaStar } from "react-icons/fa";
 
 const product = {
   name: "Unlocked Apple iPhone11 Pro, 64GB/256GB, 12MP Camera ",
-  slug: "sample-product", // Usually, you would generate this using a slugify function
+  slug: "sample-product",
   description: "This is a sample product description.",
   price: 480.99,
   regularPrice: 599.23,
@@ -113,7 +112,10 @@ const ProductsDetails = () => {
             <div>
               <p className="text-[#aaaaaa]">{product.category}</p>
               <div className="border-bottom">
-                <h3 className="md:text-3xl text-2xl  text-[#000000c9] font-[500]">
+                <h3
+                  className="md:text-3xl text-2xl  text-[#000000c9] font-[500]"
+                  style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.2)" }}
+                >
                   {" "}
                   {product.name}
                 </h3>
@@ -149,22 +151,22 @@ const ProductsDetails = () => {
                 </div>
 
                 <div className="flex items-center gap-4 mt-8">
-                  <div className="flex flex-col text-white rounded-md justify-center size-20 items-center bg-[#0068c8] ">
-                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold ">
+                  <div className="flex flex-col bg-gradient-to-br from-blue-300 via-blue-500 to-blue-900 text-white rounded-md justify-center size-20 items-center shadow-lg">
+                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold " style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.9)" }}>
                       {/* {timeLeft.days} */}
                       01
                     </span>
                     <span className="text-[16px] font-[400] -mt-2">Days</span>
                   </div>
-                  <div className="flex flex-col text-white rounded-md justify-center size-20 items-center bg-[#0068c8] ">
-                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold ">
+                  <div className="flex flex-col bg-gradient-to-br from-blue-300 via-blue-500 to-blue-900 text-white rounded-md justify-center size-20 items-center shadow-lg">
+                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold " style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.9)" }}>
                       {/* {timeLeft.hours} */}
                       23
                     </span>
                     <span className="text-[16px] font-[400] -mt-2">Hours</span>
                   </div>
-                  <div className="flex flex-col text-white rounded-md justify-center size-20 items-center bg-[#0068c8] ">
-                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold ">
+                  <div className="flex flex-col bg-gradient-to-br from-blue-300 via-blue-500 to-blue-900 text-white rounded-md justify-center size-20 items-center shadow-lg ">
+                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold " style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.9)" }}>
                       {/* {timeLeft.minutes} */}
                       59
                     </span>
@@ -172,8 +174,8 @@ const ProductsDetails = () => {
                       Minutes
                     </span>
                   </div>
-                  <div className="flex flex-col text-white rounded-md justify-center size-20 items-center bg-[#0068c8] ">
-                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold ">
+                  <div className="flex flex-col bg-gradient-to-br from-blue-300 via-blue-500 to-blue-900 text-white rounded-md justify-center size-20 items-center shadow-lg">
+                    <span className="flex justify-center items-center  rounded-full text-2xl font-bold " style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.9)" }}>
                       59
                       {/* {timeLeft.seconds} */}
                     </span>
@@ -204,7 +206,7 @@ const ProductsDetails = () => {
                   <li>Screen Size: 13.3 inches</li>
                 </ul>
 
-                <ul className="list-disc flex bg-[#e8f3fe] text-[#1273cc] font-[500] gap-2 flex-col mt-6 px-8 py-4 rounded-md">
+                <ul className="list-disc flex bg-[#e8f3fe] text-[#1273cc] font-[500] gap-2 flex-col mt-6 px-8 py-4 rounded-md bg-gradient-to-br from-purple-100 via-white to-blue-100  w-full  hover:bg-white shadow-md">
                   <li>Estimated delivery time 14-30 days</li>
                   <li>18 months warranty at Genuine Warranty Center.</li>
                   <li>Whats in the box: charging cable and block</li>
@@ -225,7 +227,6 @@ const ProductsDetails = () => {
                   </span>
                   <button
                     className={`bg-gradient-to-b from-gray-200 to-gray-100 border border-gray-300 text-black font-bold rounded-sm shadow-lg transform active:translate-y-[2px]  hover:shadow-xl transition-all duration-300 w-6 h-6 `}
-                    
                   >
                     +
                   </button>
@@ -244,7 +245,7 @@ const ProductsDetails = () => {
                   </div>
                   <div className="w-full bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 hover:m-0 m-[1px] hover:p-[1px] rounded-sm">
                     <button className="bg-gradient-to-br from-purple-100 via-white to-blue-100 text-gray-800 w-full py-2 font-bold rounded-sm hover:text-blue-500 hover:bg-white shadow-md">
-                      <span className="bg-gradient-to-r from-orange-500 via-yellow-500 to-red-500 bg-clip-text text-transparent">
+                      <span className="bg-gradient-to-br from-orange-500 via-yellow-500 to-red-500 bg-clip-text text-transparent">
                         Add Card
                       </span>
                     </button>
@@ -281,7 +282,7 @@ const ProductsDetails = () => {
           <div className="md:flex items-center gap-6 bg-[#fffbf8] p-6 mt-4 border border-orange-200">
             <div className="md:block flex items-end">
               <div className="w-full font-semibold text-orange-500 -mb-1">
-                <span className="text-3xl">
+                <span className="text-3xl" style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.1)" }}>
                   {(totalRating / ratingArray.length).toFixed(1)}
                 </span>
                 <span className=""> out of 5</span>

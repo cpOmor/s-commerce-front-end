@@ -5,6 +5,16 @@ import Image from "next/image";
 import cartIcon from "@/assets/icon/cart.png";
 import { useState } from "react";
 import Container from "@/components/shared/Container";
+import { FieldValues, useForm } from "react-hook-form";
+import {
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
+import { regionsData } from "../../../../regionsData";
 
 const CheckoutPage = () => {
   const [shippingCost, setShippingCost] = useState(110);
@@ -35,7 +45,14 @@ const CheckoutPage = () => {
     },
   ];
 
-  const subTotal: { price: number; quantity: number; }[] = [];
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
+
+  const subTotal: { price: number; quantity: number }[] = [];
   const calculateTotal = () => {
     const sum = subTotal.reduce(
       (acc, product) => acc + product.price * product.quantity,
@@ -43,6 +60,70 @@ const CheckoutPage = () => {
     );
     return sum;
   };
+
+  const onSubmit = async (data: FieldValues) => {
+    console.log(data);
+  };
+
+  const countryOptions = [
+    { value: "Bangladesh", label: "Bangladesh" },
+    { value: "India", label: "India" },
+    { value: "Pakistan", label: "Pakistan" },
+    { value: "United States", label: "United States" },
+    { value: "Canada", label: "Canada" },
+    { value: "United Kingdom", label: "United Kingdom" },
+    { value: "Australia", label: "Australia" },
+  ];
+
+  const phoneCodeOptions = [
+    { value1: "+880", label1: "+880 (Bangladesh)" },
+    { value1: "+91", label1: "+91 (India)" },
+    { value1: "+92", label1: "+92 (Pakistan)" },
+    { value1: "+1", label1: "+1 (United States)" },
+    { value1: "+44", label1: "+44 (United Kingdom)" },
+    { value1: "+61", label1: "+61 (Australia)" },
+  ];
+
+  interface Period {
+    multiplier: any;
+    // other properties...
+  }
+
+  const [phoneNumber, setPhoneNumber] = useState(phoneCodeOptions[0]);
+  const [selectedCountry, setSelectedCountry] = useState(countryOptions[0]);
+
+  const [subscriptionId, setSubscriptionId] = useState("");
+  const [subscriptionPlan, setSubscriptionPlan] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [discountedAmount, setDiscountedAmount] = useState(0);
+  const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(null);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  const [selectedRegion, setSelectedRegion] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [selectedArea, setSelectedArea] = useState("");
+
+  const handleRegionChange = (e) => {
+    setSelectedRegion(e.target.value);
+    setSelectedCity("");
+    setSelectedArea("");
+  };
+
+  const handleCityChange = (e) => {
+    setSelectedCity(e.target.value);
+    setSelectedArea("");
+  };
+
+  const handleAreaChange = (e) => {
+    setSelectedArea(e.target.value);
+  };
+
+  const availableCities =
+    regionsData[0]?.cities.find((city) => city.name === selectedRegion)
+      ?.districts || [];
+  const availableAreas =
+    availableCities.find((district) => district.name === selectedCity)
+      ?.subAreas || [];
 
   return (
     <>
@@ -63,8 +144,8 @@ const CheckoutPage = () => {
         </div>
         {products.length > 0 ? (
           <>
-            <div className="grid md:grid-cols-3 mt-10 ">
-              <div className=" col-span-2 pr-0 md:pr-8">
+            <div className="grid md:grid-cols-2 mt-10 gap-10">
+              {/* <div className=" col-span-2 pr-0 md:pr-8">
                 <div>
                   <h2>BILLING DETAILS</h2>
                 </div>
@@ -162,6 +243,241 @@ const CheckoutPage = () => {
                     />
                   </div>
                 </form>
+              </div> */}
+
+              <div className="bg-[#f4f4f4] shadow rounded-md md:p-6 p-4 w-full border">
+                <form className="space-y-4">
+                  <div>
+                    <label>Region</label>
+                    <select
+                      value={selectedRegion}
+                      onChange={handleRegionChange}
+                      className="w-full p-2 border border-gray-300 rounded"
+                    >
+                      <option value="">Select Region</option>
+                      {regionsData[0].cities.map((region) => (
+                        <option key={region.name} value={region.name}>
+                          {region.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label>City</label>
+                    <select
+                      value={selectedCity}
+                      onChange={handleCityChange}
+                      disabled={!selectedRegion}
+                      className="w-full p-2 border border-gray-300 rounded"
+                    >
+                      <option value="">Select City</option>
+                      {availableCities.map((city) => (
+                        <option key={city.name} value={city.name}>
+                          {city.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label>Area</label>
+                    <select
+                      value={selectedArea}
+                      onChange={handleAreaChange}
+                      disabled={!selectedCity}
+                      className="w-full p-2 border border-gray-300 rounded"
+                    >
+                      <option value="">Select Area</option>
+                      {availableAreas.map((area) => (
+                        <option key={area.name} value={area.name}>
+                          {area.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </form>
+                {/* <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                  <h2 className="text-[24px] font-Poppins font-semibold">
+                    Billing address
+                  </h2>
+
+                  <div className="md:flex md:space-x-4">
+                    <div className="md:w-1/2 w-full">
+                      <label className="block md:md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Name (optional)
+                      </label>
+                      <input
+                        type="text"
+                        {...register("name")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                    </div>
+                    <div className="md:w-1/2 w-full mt-3 md:mt-0">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Region
+                      </label>
+                      <input
+                        type="text"
+                        {...register("companyName")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="md:flex md:space-x-4">
+                    <div className="md:w-1/2 w-full mt-3 md:mt-0">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Phone Number
+                      </label>
+                      <input
+                        type="text"
+                        {...register("phoneNumber")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                       {errors.phoneNumber && (
+                        <p className="text-primaryColor md:text-[18px] text-[14px] font-Noto-Sans-Bengali font-normal">
+                          {errors.phoneNumber.message}
+                        </p>
+                      )} 
+                    </div>
+                    <div className="md:w-1/2 w-full mt-3 md:mt-0">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        City
+                      </label>
+                      <input
+                        type="text"
+                        {...register("phoneNumber")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                      {errors.phoneNumber && (
+                        <p className="text-primaryColor md:text-[18px] text-[14px] font-Noto-Sans-Bengali font-normal">
+                          {errors.phoneNumber.message}
+                        </p>
+                      )} 
+                    </div>
+                  </div>
+                  <div className="md:flex md:space-x-4">
+                    <div className="md:w-1/2 w-full mt-3 md:mt-0">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Building / House No / Floor / Street
+                      </label>
+                      <input
+                        type="text"
+                        {...register("phoneNumber")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                       {errors.phoneNumber && (
+                        <p className="text-primaryColor md:text-[18px] text-[14px] font-Noto-Sans-Bengali font-normal">
+                          {errors.phoneNumber.message}
+                        </p>
+                      )} 
+                    </div>
+                    <div className="md:w-1/2 w-full mt-3 md:mt-0">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Area
+                      </label>
+                      <input
+                        type="text"
+                        {...register("phoneNumber")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                      {errors.phoneNumber && (
+                        <p className="text-primaryColor md:text-[18px] text-[14px] font-Noto-Sans-Bengali font-normal">
+                          {errors.phoneNumber.message}
+                        </p>
+                      )} 
+                    </div>
+                  </div>
+
+                 
+                  <div className="md:flex md:space-x-4">
+                    <div className="md:w-1/2 w-full">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Locality / Landmark
+                      </label>
+                      <input
+                        type="text"
+                        // {...register("region")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                    </div>
+                    <div className="md:w-1/2 w-full mt-3 md:mt-0">
+                      <label className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                        Address
+                      </label>
+                      <input
+                        type="text"
+                        // {...register("city")}
+                        className="w-full p-2 border border-secondaryColor rounded outline-0 md:text-[16px] text-[14px] font-normal font-Poppins"
+                      />
+                    </div>
+                  </div>
+                  <p className="block md:text-[16px] text-[14px] font-normal font-Poppins">
+                    Select a label for effective delivery:
+                  </p>
+
+                 
+                  <div>
+                    <div className="flex items-center w-full justify-between gap-4">
+                      <div className="w-full bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 hover:m-0 m-[1px] hover:p-[1px] rounded-sm">
+                        <button className="bg-gradient-to-br from-purple-100 via-white to-blue-100 text-gray-800 w-full py-2 font-bold rounded-sm hover:text-blue-500 hover:bg-white shadow-md">
+                          <span
+                            className={`bg-gradient-to-bl from-green-500 via-blue-500 to-green-500 bg-clip-text text-transparent cursor-pointer transition-transform duration-300`}
+                          >
+                            HOME
+                          </span>
+                        </button>
+                      </div>
+                      <div className="w-full bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 hover:m-0 m-[1px] hover:p-[1px] rounded-sm">
+                        <button className="bg-gradient-to-br from-purple-100 via-white to-blue-100 text-gray-800 w-full py-2 font-bold rounded-sm hover:text-blue-500 hover:bg-white shadow-md">
+                          <span className="bg-gradient-to-br from-orange-500 via-yellow-500 to-red-500 bg-clip-text text-transparent">
+                            Office
+                          </span>
+                        </button>
+                      </div>
+                      <div className="w-full bg-gradient-to-br from-purple-400 via-pink-300 to-blue-400 hover:m-0 m-[1px] hover:p-[1px] rounded-sm">
+                        <button className="bg-gradient-to-br from-purple-100 via-white to-blue-100 text-gray-800 w-full py-2 font-bold rounded-sm hover:text-blue-500 hover:bg-white shadow-md">
+                          <span className="bg-gradient-to-br from-orange-500 via-yellow-500 to-red-500 bg-clip-text text-transparent">
+                            Guest
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form> */}
+
+                <div className="mt-10">
+                  {products.map((product) => (
+                    <div key={product.id} className=" flex justify-between">
+                      <div className="flex">
+                        <p className="pr-8 border w-20">
+                          <Image
+                            src={product?.image}
+                            alt="image"
+                            width="300"
+                            height="300"
+                          ></Image>
+                        </p>
+                      </div>
+                      <div className="flex">
+                        <p className="pr-8 border w-44">
+                          {product.name} x <span>{product.quantity}</span>
+                        </p>
+                      </div>
+
+                      <p className="lg:w-[110px] font-semibold">
+                        ${(product.price * product.quantity).toFixed(2)}
+                        <span className="hidden">
+                          {subTotal.push({
+                            price: product.price,
+                            quantity: product.quantity,
+                          })}
+                        </span>
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="border border-blue-500 rounded-md">
                 <div className="lg:p-8 p-4 flex flex-col justify-between h-full w-full overflow-hidden">
@@ -171,29 +487,6 @@ const CheckoutPage = () => {
                       <p className="">Product</p>
                       <p className="">Subtotal</p>
                     </div>
-
-                    <div className="mt-4">
-                      {products.map((product) => (
-                        <div key={product.id} className=" flex justify-between">
-                          <div className="flex">
-                            <p className="pr-8 border w-44">
-                              {product.name} x <span>{product.quantity}</span>
-                            </p>
-                          </div>
-
-                          <p className="lg:w-[110px] font-semibold">
-                            ${(product.price * product.quantity).toFixed(2)}
-                            <span className="hidden">
-                              {subTotal.push({
-                                price: product.price,
-                                quantity: product.quantity,
-                              })}
-                            </span>
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-
                     <div className="mt-4 flex justify-between font-semibold border-b pb-4">
                       <p className="">Subtotal</p>
                       <p className="">${calculateTotal().toFixed(2)}</p>

@@ -9,41 +9,40 @@ export const theme = createTheme({
       main: "#666f73",
     },
   },
-
-
-  components:{
-     MuiButton:{
-        defaultProps:{
-            variant:"contained"
+  components: {
+    MuiButton: {
+      defaultProps: {
+        variant: "contained",
+      },
+      styleOverrides: {
+        root: {
+          padding: "8px 32px",
         },
-        styleOverrides:{
-            root:{
-                padding:"8px 32px"
-            },
-             // Additional button sizes
-             sizeLarge: {
-              padding: "6px 24px", // Adjust padding for large size
-          },
-          sizeSmall: {
-              padding: "10px 24px", // Adjust padding for small size
-              fontWeight:"400"
-          },
-        }
-     },
-
-     MuiContainer:{
-        defaultProps:{
-            maxWidth:"lg"
-        }
-     }
-    
+        // Additional button sizes
+        sizeLarge: {
+          padding: "6px 24px", // Adjust padding for large size
+        },
+        sizeSmall: {
+          padding: "10px 24px", // Adjust padding for small size
+          fontWeight: "400",
+        },
+      },
+    },
+    MuiContainer: {
+      defaultProps: {
+        maxWidth: "lg",
+      },
+    },
   },
-  typography:{
+  typography: {
     fontFamily: "Montserrat, sans-serif",
-       body1:{
-        color:"0B1134CC"
-       } 
-  }
+    body1: {
+      color: "0B1134CC",
+    },
+  },
 });
 
-theme.shadows[1] = "0px 5px 22px lightgray"
+theme.shadows[1] = "0px 5px 22px lightgray";
+
+
+export default theme;
